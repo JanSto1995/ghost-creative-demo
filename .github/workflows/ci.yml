@@ -1,0 +1,28 @@
+name: Demo checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test built app in Chromium
+        # Playwright's webServer runs next start and waits for readiness.
+        run: npm run test:browser
+        env:
+          NEXT_TELEMETRY_DISABLED: 1

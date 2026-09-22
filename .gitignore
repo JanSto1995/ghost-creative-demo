@@ -1,0 +1,12 @@
+node_modules/
+.next/
+.cache/
+coverage/
+test-results/
+playwright-report/
+*.tsbuildinfo
+.env*
+.DS_Store
+
+# Local planning document; excluded from publication.
+PLAN.md
